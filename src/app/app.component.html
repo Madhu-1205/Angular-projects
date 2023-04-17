@@ -1,0 +1,81 @@
+<h1>Form Enrollment</h1>
+<form #userform="ngForm" *ngIf="!submitted" novalidate (ngSubmit)="onSubmit()">
+  {{userform.value | json}}
+
+  <!-- <div (ngModel)Group="Address">
+    <div>
+      <label>street</label>
+      <input type="text" name="street" (ngModel)>
+    </div>
+  <div>
+    <label>state</label>
+    <input type="text" name="state" (ngModel)>
+  </div>
+  <div>
+    <label>country</label>
+    <input type="text" name="cty" (ngModel)>
+  </div> -->
+
+  <!-- </div> -->
+  <hr>
+  {{username|json}}
+  <div>
+    <label>Name:</label>
+    <input type="text" class="form-control " required name="username" #name="ngModel"
+      [class.is-invalid]="name.invalid && name.touched" [(ngModel)]="username.username">
+    <small class="invalid-feedback" [class.d-none]="name.valid || name.untouched">Name is required</small>
+  </div>
+
+  <div>
+    <label>Email:</label>
+    <input type="email" class="form-control " name="email" [(ngModel)]="username.email">
+  </div>
+  <div>
+    <label>phoneNumber:</label>
+    <input type="tel" class="form-control" name="phoneNumber" #phone="ngModel" required="true"
+      pattern="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$" [class.is-invalid]="phone.invalid && phone.touched"
+      [(ngModel)]="username.phoneNumber">
+    <div *ngIf="phone.errors && (phone.invalid || phone.touched)">
+      <small *ngIf="phone.errors?.['required']" class="text-danger"> Phone number must enter</small>
+      <small *ngIf="phone.errors?.['pattern']" class="text-danger"> Phone number must match with the pattern.please check!pattern</small>
+
+    </div>
+    <!-- <small cl  ass="invalid-feedback" [class.d-none]="phone.valid || phone.untouched">phoneNumber must be 10 digit</small> -->
+  </div>
+  <div>
+    <label>Courses:</label>
+    <select class="form-control" [class.is-invalid]="course.touched && HasError" required #course="ngModel"
+      name="courses" class="form-select form-select-sm" aria-label=".form-select-sm example" id="courses"
+      [(ngModel)]="username.preference" (blur)="onClick(course.value)" (change)="onClick(course.value)" (click)="onClick(course.value)">
+      <option class="form-control" value="default" >I am interested in </option>
+      <option class="form-control" *ngFor="let course of this.courses">{{course}}</option>
+    </select>
+    <small class="text-danger" [class.d-none]="course.untouched || !HasError">Please select the course!</small>
+  </div>
+  <div>
+
+    <label>Time preference</label>
+    <div class="form-check">
+      <input [(ngModel)]="username.TimePreference" class="form-control" type="radio" name="Timings"
+        class="form-check-input" value="morning">
+      <label class="form-check-label">Morning(6-8AM)</label>
+    </div>
+    <div class="form-check">
+      <input [(ngModel)]="username.TimePreference" class="form-control" type="radio" name="Timings"
+        class="form-check-input" value="evening">
+      <label class="form-check-label">Evening(6-8AM)</label>
+    </div>
+
+  </div>
+  <div class="form-check">
+
+    <input type="checkbox" name="subscribe" class="form-control" class="form-check-input"
+      [(ngModel)]="username.subscribe">
+    <label class="form-check-label">subscribe for promotions</label>
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="HasError || !name.value">submit</button>
+
+
+</form>
+<p [class.alert-success]="clicked" [class.alert]="clicked" *ngIf="clicked">Your form has been submitted successfully!</p >
+
